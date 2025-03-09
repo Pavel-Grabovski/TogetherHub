@@ -15,13 +15,13 @@ namespace Infrastructure.Migrations
                 name: "Topics",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    EventStart = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Summary = table.Column<string>(type: "TEXT", nullable: false),
-                    TopicType = table.Column<string>(type: "TEXT", nullable: false),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    Street = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    EventStart = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Summary = table.Column<string>(type: "text", nullable: false),
+                    TopicType = table.Column<string>(type: "text", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: false),
+                    Street = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,8 +12,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlite(builder.Configuration
-        .GetConnectionString("SqLiteConnection"));
+    options.UseNpgsql(builder.Configuration
+        .GetConnectionString("PostgreSQLConnection"));
 });
 
 
