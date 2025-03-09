@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data.DataBaseContext;
+﻿using Application.Data.DataBaseContext;
+using Infrastructure.Data.DataBaseContext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,10 +14,11 @@ public static class DependencyInjection
         string? connectionString = configuration.GetConnectionString(
             "PostgreSQLConnection");
 
-        services.AddDbContext<ApplicationDbContext>(options =>
+        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
         });
+
         return services;
     }
 }
