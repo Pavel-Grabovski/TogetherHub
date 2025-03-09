@@ -21,6 +21,9 @@ public class Topic : Entity<TopicId>
         ArgumentException.ThrowIfNullOrWhiteSpace(summary);
         ArgumentException.ThrowIfNullOrWhiteSpace(topicType);
 
+        if (eventStart.Kind != DateTimeKind.Utc)
+            eventStart = eventStart.ToUniversalTime();
+
         Topic topic = new Topic
         {
             Id = id,
