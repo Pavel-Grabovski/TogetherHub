@@ -1,8 +1,4 @@
-﻿using Domain.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Infrastructure.Data.Configurations;
+﻿namespace Infrastructure.Data.Configurations;
 
 public class TopicLocationConfiguration : IEntityTypeConfiguration<Topic>
 {

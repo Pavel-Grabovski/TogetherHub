@@ -1,7 +1,4 @@
 ﻿using Application.Data.DataBaseContext;
-using Domain.Model;
-using Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Data.DataBaseContext;

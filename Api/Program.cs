@@ -1,7 +1,3 @@
-using Api;
-using Infrastructure.Extensions;
-using Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services

@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Data.DataBaseContext;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions;
