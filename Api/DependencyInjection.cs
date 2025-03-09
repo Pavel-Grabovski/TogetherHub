@@ -7,6 +7,10 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddControllers();
+
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
         return services;
@@ -19,6 +23,8 @@ public static class DependencyInjection
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection();
