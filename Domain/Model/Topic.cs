@@ -2,11 +2,11 @@
 
 public class Topic : Entity<TopicId>
 {
-    public required string Title { get; set; }
-    public DateTime? EventStart { get; set; }
-    public required string Summary { get; set; }
-    public required string TopicType { get; set; }
-    public required Location Location { get; set; }
+    public required string Title { get; set; } = default!;
+    public DateTime? EventStart { get; set; } = default!;
+    public required string Summary { get; set; } = default!;
+    public required string TopicType { get; set; } = default!;
+    public required Location Location { get; set; } = default!;
 
 
     public static Topic Create(
