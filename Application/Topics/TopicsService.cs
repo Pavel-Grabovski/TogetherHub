@@ -26,12 +26,12 @@ public class TopicsService(
     {
         throw new NotImplementedException();
     }
-    public Task<Topic> UpdateTopicAsync(TopicId id, Topic topicRequestDto)
+    public Task<Topic> UpdateTopicAsync(Guid id, Topic topicRequestDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Topic> DeleteTopicAsync(TopicId id)
+    public Task<Topic> DeleteTopicAsync(Guid id)
     {
         throw new NotImplementedException();
     }
