@@ -1,6 +1,8 @@
 ﻿using Application.Data.DataBaseContext;
 using Application.Dtos;
+using Application.Exceptions;
 using AutoMapper;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Topics;
@@ -22,9 +24,18 @@ public class TopicsService(
         return topicsResponse;
     }
 
-    public Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
+    public async Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        TopicId topicId = TopicId.Of(id);
+        Topic? topicDb = await dbContext.Topics
+            .FindAsync(topicId);
+
+        if(topicDb is null)
+            throw new TopicNotFoundException(id);
+
+        TopicResponseDto responseDto = mapper.Map<TopicResponseDto>(topicDb);
+
+        return responseDto;
     }
 
     public Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto topicRequestDto)

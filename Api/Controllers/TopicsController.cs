@@ -15,4 +15,10 @@ public class TopicsController
     {
         return Ok(await topicsService.GetTopicsAsync());
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TopicResponseDto>> GetTopic(Guid id)
+    {
+        return Ok(await topicsService.GetTopicByIdAsync(id));
+    }
 }
