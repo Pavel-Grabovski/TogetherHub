@@ -1,4 +1,5 @@
-﻿using Application.Topics;
+﻿using Application.Mapper;
+using Application.Topics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddScoped<ITopicsService, TopicsService>();
+        services.AddAutoMapper(typeof(MappingProfile));
      
         return services;
     }

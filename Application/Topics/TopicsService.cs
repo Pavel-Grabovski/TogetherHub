@@ -1,40 +1,45 @@
 ﻿using Application.Data.DataBaseContext;
+using Application.Dtos;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Topics;
 
 public class TopicsService(
     IApplicationDbContext dbContext,
-    ILogger<TopicsService> logger) 
+    ILogger<TopicsService> logger,
+    IMapper mapper) 
     : ITopicsService
 {
-    public async Task<List<Topic>> GetTopicsAsync()
+    public async Task<List<TopicResponseDto>> GetTopicsAsync()
     {
-        List<Topic> topics = await dbContext.Topics
+        List<Topic> topicsDb = await dbContext.Topics
             .AsNoTracking()
             .ToListAsync();
 
-        return topics;
+        List<TopicResponseDto> topicsResponse = mapper.Map<List<TopicResponseDto>>(topicsDb);
+
+        return topicsResponse;
     }
 
-    public Task<Topic> GetTopicByIdAsync(Guid id)
+    public Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Topic> CreateTopicAsync(Topic topicRequestDto)
-    {
-        throw new NotImplementedException();
-    }
-    public Task<Topic> UpdateTopicAsync(Guid id, Topic topicRequestDto)
+    public Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto topicRequestDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Topic> DeleteTopicAsync(Guid id)
+    public Task<TopicResponseDto> DeleteTopicAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
 
+    public Task<TopicResponseDto> UpdateTopicAsync(Guid id, UpdateTopicRequestDto topicRequestDto)
+    {
+        throw new NotImplementedException();
+    }
 }
