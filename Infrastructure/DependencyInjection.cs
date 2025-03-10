@@ -14,11 +14,11 @@ public static class DependencyInjection
         string? connectionString = configuration.GetConnectionString(
             "PostgreSQLConnection");
 
-        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+        services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
         });
-
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         return services;
     }
 }
