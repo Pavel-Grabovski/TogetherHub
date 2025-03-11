@@ -82,9 +82,17 @@ public class TopicsService(
         return mapper.Map<TopicResponseDto>(topicDb);
     }
 
-    public async Task<TopicResponseDto> DeleteTopicAsync(Guid id)
+    public async Task DeleteTopicAsync(Guid id)
     {
-        throw new NotImplementedException();
+        TopicId topicId = TopicId.Of(id);
+        Topic? topicDb = await dbContext.Topics
+            .FindAsync(topicId);
+
+        if (topicDb is null)
+            throw new TopicNotFoundException(id);
+
+        dbContext.Topics.Remove(topicDb);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
     }
 
 }

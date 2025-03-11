@@ -35,4 +35,12 @@ public class TopicsController
     {
         return Ok(await topicsService.UpdateTopicAsync(id, dto));
     }
+
+    [HttpDelete]
+    [Route("delete/{id}")]
+    public async Task<ActionResult> DeleteTopic(Guid id)
+    {
+        await topicsService.DeleteTopicAsync(id);
+        return NoContent();
+    }
 }
