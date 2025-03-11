@@ -1,4 +1,3 @@
-using Application.Topics.Queries.GetTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -23,10 +22,12 @@ public class TopicsController
 
     [HttpPost]
     [Route("create")]
-    public async Task<ActionResult<TopicResponseDto>> CreateTopic(CreateTopicRequestDto dto)
+    public async Task<IResult> CreateTopic(CreateTopicRequestDto dto)
     {
-        return Ok(null);
-        //return Ok(await topicsService.CreateTopicAsync(dto));
+        CreateTopicResult result = await mediator.Send(new CreateTopicCommand(dto));
+        string uri = $"/topics/{result.Result.Id}";
+
+        return Results.Created(uri, result);
     }
 
     [HttpPut]

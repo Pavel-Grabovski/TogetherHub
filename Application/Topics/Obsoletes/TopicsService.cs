@@ -7,6 +7,7 @@ public class TopicsService(
     IMapper mapper)
 //: ITopicsService
 {
+    [Obsolete]
     public async Task<List<TopicResponseDto>> GetTopicsAsync()
     {
         List<Topic> topicsDb = await dbContext.Topics
@@ -19,7 +20,7 @@ public class TopicsService(
         return topicsResponse;
     }
 
-
+    [Obsolete]
     public async Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
     {
         TopicId topicId = TopicId.Of(id);
@@ -34,6 +35,7 @@ public class TopicsService(
         return responseDto;
     }
 
+    [Obsolete]
     public async Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto dto)
     {
         Topic newTopic = Topic.Create(
