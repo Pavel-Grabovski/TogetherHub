@@ -2,6 +2,7 @@
 using Application.Dtos;
 using Application.Exceptions;
 using AutoMapper;
+using Domain.Model;
 using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
@@ -38,9 +39,20 @@ public class TopicsService(
         return responseDto;
     }
 
-    public Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto topicRequestDto)
+    public async Task<TopicResponseDto> CreateTopicAsync(CreateTopicRequestDto dto)
     {
-        throw new NotImplementedException();
+        Topic newTopic = Topic.Create(
+            TopicId.Of(Guid.NewGuid()),
+            dto.Title,
+            dto.EventStart,
+            dto.Summary,
+            dto.TopicType,
+            Location.Of(dto.Location.City, dto.Location.Street));
+
+        dbContext.Topics.Add(newTopic);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        return mapper.Map<TopicResponseDto>(newTopic);
     }
 
     public Task<TopicResponseDto> DeleteTopicAsync(Guid id)

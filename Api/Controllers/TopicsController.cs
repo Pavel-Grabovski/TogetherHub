@@ -21,4 +21,11 @@ public class TopicsController
     {
         return Ok(await topicsService.GetTopicByIdAsync(id));
     }
+
+    [HttpPost]
+    [Route("create")]
+    public async Task<ActionResult<TopicResponseDto>> CreateTopic(CreateTopicRequestDto dto)
+    {
+        return Ok(await topicsService.CreateTopicAsync(dto));
+    }
 }
