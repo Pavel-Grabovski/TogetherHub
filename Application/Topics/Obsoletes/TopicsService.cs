@@ -52,7 +52,7 @@ public class TopicsService(
         return mapper.Map<TopicResponseDto>(newTopic);
     }
 
-
+    [Obsolete]
     public async Task<TopicResponseDto> UpdateTopicAsync(Guid id, UpdateTopicRequestDto topicRequestDto)
     {
         TopicId topicId = TopicId.Of(id);

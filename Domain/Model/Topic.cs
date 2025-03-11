@@ -36,4 +36,35 @@ public class Topic : Entity<TopicId>
 
         return topic;
     }
+
+    public Topic Update(
+        string? title = default,
+        string? summary = default,
+        string? topicType = default,
+        Location? location = default,
+        DateTime? eventStart = default
+        )
+    {
+        if(!string.IsNullOrEmpty(title))
+            Title = title;
+
+        if(!string.IsNullOrEmpty(summary))
+            Summary = summary;
+
+        if(!string.IsNullOrEmpty(topicType))
+            TopicType = topicType;
+
+        if(location is not null)
+            Location = location;
+
+        if (eventStart.HasValue)
+        {
+            if(eventStart.Value.Kind != DateTimeKind.Utc)
+                eventStart = eventStart.Value.ToUniversalTime();
+
+            EventStart = eventStart.Value;
+        }
+
+        return this;
+    }
 }
