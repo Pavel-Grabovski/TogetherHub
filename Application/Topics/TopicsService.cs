@@ -55,14 +55,36 @@ public class TopicsService(
         return mapper.Map<TopicResponseDto>(newTopic);
     }
 
-    public Task<TopicResponseDto> DeleteTopicAsync(Guid id)
+    public async Task<TopicResponseDto> UpdateTopicAsync(Guid id, UpdateTopicRequestDto topicRequestDto)
+    {
+        TopicId topicId = TopicId.Of(id);
+        Topic? topicDb = await dbContext.Topics
+            .FindAsync(topicId);
+
+        if (topicDb is null)
+            throw new TopicNotFoundException(id);
+
+        topicDb.Title = topicRequestDto.Title ?? topicDb.Title;
+        topicDb.Summary = topicRequestDto.Summary ?? topicDb.Summary;
+        topicDb.TopicType = topicRequestDto.TopicType ?? topicDb.TopicType;
+        topicDb.Location =  Location.Of(
+            topicRequestDto.Location.City,
+            topicRequestDto.Location.Street);
+
+        if(topicRequestDto.EventStart.HasValue 
+            && topicRequestDto.EventStart.Value.Kind != DateTimeKind.Utc)
+        {
+            topicDb.EventStart = topicRequestDto.EventStart.Value.ToUniversalTime();
+        }
+
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        return mapper.Map<TopicResponseDto>(topicDb);
+    }
+
+    public async Task<TopicResponseDto> DeleteTopicAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-
-    public Task<TopicResponseDto> UpdateTopicAsync(Guid id, UpdateTopicRequestDto topicRequestDto)
-    {
-        throw new NotImplementedException();
-    }
 }

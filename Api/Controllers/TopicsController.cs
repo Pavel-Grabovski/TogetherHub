@@ -28,4 +28,11 @@ public class TopicsController
     {
         return Ok(await topicsService.CreateTopicAsync(dto));
     }
+
+    [HttpPut]
+    [Route("update")]
+    public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid id, [FromBody]UpdateTopicRequestDto dto)
+    {
+        return Ok(await topicsService.UpdateTopicAsync(id, dto));
+    }
 }
