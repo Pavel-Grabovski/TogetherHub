@@ -1,5 +1,4 @@
-﻿using Application.Topics;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -10,7 +9,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        //services.AddScoped<ITopicsService, TopicsService>();
         services.AddAutoMapper(typeof(MappingProfile));
      
         return services;

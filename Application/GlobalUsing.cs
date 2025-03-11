@@ -7,3 +7,4 @@ global using Domain.Model;
 global using Domain.ValueObjects;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
+global using Shared.SQRS;
