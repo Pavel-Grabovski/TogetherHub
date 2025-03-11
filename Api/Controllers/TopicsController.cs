@@ -1,3 +1,4 @@
+using Application.Topics.Queries.GetTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -15,10 +16,9 @@ public class TopicsController
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TopicResponseDto>> GetTopic(Guid id)
+    public async Task<IResult> GetTopic(Guid id)
     {
-        return Ok(null);
-        //return Ok(await topicsService.GetTopicByIdAsync(id));
+        return Results.Ok(await mediator.Send(new GetTopicQuery(id)));
     }
 
     [HttpPost]
