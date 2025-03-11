@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos;
 
-public record LocationDto(
+public record LocationRequestDto(
     string City,
     string Street
 );

@@ -4,6 +4,6 @@ public record CreateTopicRequestDto(
     string Title,
     string Summary,
     string TopicType,
-    LocationDto Location,
+    LocationRequestDto Location,
     DateTime EventStart
 );

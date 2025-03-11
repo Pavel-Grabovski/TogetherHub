@@ -4,6 +4,6 @@ public record UpdateTopicRequestDto(
     string Title,
     string Summary,
     string TopicType,
-    LocationDto Location,
+    LocationRequestDto Location,
     DateTime? EventStart
 );
