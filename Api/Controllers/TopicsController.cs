@@ -1,3 +1,4 @@
+using Application.Topics.Commands.DeleteTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -40,9 +41,8 @@ public class TopicsController
 
     [HttpDelete]
     [Route("delete/{id}")]
-    public async Task<ActionResult> DeleteTopic(Guid id)
+    public async Task<IResult> DeleteTopic(Guid id)
     {
-        //await topicsService.DeleteTopicAsync(id);
-        return NoContent();
+        return Results.Ok(await mediator.Send(new DeleteTopicCommand(id)));
     }
 }

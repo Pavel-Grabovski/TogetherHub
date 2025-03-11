@@ -52,6 +52,7 @@ public class TopicsService(
         return mapper.Map<TopicResponseDto>(newTopic);
     }
 
+
     public async Task<TopicResponseDto> UpdateTopicAsync(Guid id, UpdateTopicRequestDto topicRequestDto)
     {
         TopicId topicId = TopicId.Of(id);
@@ -79,6 +80,7 @@ public class TopicsService(
         return mapper.Map<TopicResponseDto>(topicDb);
     }
 
+    [Obsolete]
     public async Task DeleteTopicAsync(Guid id)
     {
         TopicId topicId = TopicId.Of(id);
