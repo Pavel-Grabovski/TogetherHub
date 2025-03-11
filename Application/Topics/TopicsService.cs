@@ -1,12 +1,4 @@
-﻿using Application.Data.DataBaseContext;
-using Application.Dtos;
-using Application.Exceptions;
-using AutoMapper;
-using Domain.Model;
-using Domain.ValueObjects;
-using Microsoft.Extensions.Logging;
-
-namespace Application.Topics;
+﻿namespace Application.Topics;
 
 public class TopicsService(
     IApplicationDbContext dbContext,
@@ -18,12 +10,14 @@ public class TopicsService(
     {
         List<Topic> topicsDb = await dbContext.Topics
             .AsNoTracking()
+            .Where(t => !t.IsDelete)
             .ToListAsync();
 
         List<TopicResponseDto> topicsResponse = mapper.Map<List<TopicResponseDto>>(topicsDb);
 
         return topicsResponse;
     }
+    
 
     public async Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
     {
@@ -31,7 +25,7 @@ public class TopicsService(
         Topic? topicDb = await dbContext.Topics
             .FindAsync(topicId);
 
-        if(topicDb is null)
+        if(topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(id);
 
         TopicResponseDto responseDto = mapper.Map<TopicResponseDto>(topicDb);
@@ -61,7 +55,7 @@ public class TopicsService(
         Topic? topicDb = await dbContext.Topics
             .FindAsync(topicId);
 
-        if (topicDb is null)
+        if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(id);
 
         topicDb.Title = topicRequestDto.Title ?? topicDb.Title;
@@ -88,10 +82,12 @@ public class TopicsService(
         Topic? topicDb = await dbContext.Topics
             .FindAsync(topicId);
 
-        if (topicDb is null)
+        if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(id);
 
-        dbContext.Topics.Remove(topicDb);
+        topicDb.IsDelete = true;
+        topicDb.DeletionTime = DateTime.UtcNow;
+
         await dbContext.SaveChangesAsync(CancellationToken.None);
     }
 
