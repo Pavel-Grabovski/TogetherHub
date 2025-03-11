@@ -30,7 +30,7 @@ public class TopicsController
     }
 
     [HttpPut]
-    [Route("update")]
+    [Route("update/{id}")]
     public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid id, [FromBody]UpdateTopicRequestDto dto)
     {
         return Ok(await topicsService.UpdateTopicAsync(id, dto));
