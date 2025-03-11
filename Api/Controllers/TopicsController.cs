@@ -5,40 +5,44 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class TopicsController
-    (ITopicsService topicsService) 
+    () 
     : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<TopicResponseDto>>> GetTopics()
     {
-        return Ok(await topicsService.GetTopicsAsync());
+        //return Ok(await topicsService.GetTopicsAsync());
+        return Ok(null);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TopicResponseDto>> GetTopic(Guid id)
     {
-        return Ok(await topicsService.GetTopicByIdAsync(id));
+        return Ok(null);
+        //return Ok(await topicsService.GetTopicByIdAsync(id));
     }
 
     [HttpPost]
     [Route("create")]
     public async Task<ActionResult<TopicResponseDto>> CreateTopic(CreateTopicRequestDto dto)
     {
-        return Ok(await topicsService.CreateTopicAsync(dto));
+        return Ok(null);
+        //return Ok(await topicsService.CreateTopicAsync(dto));
     }
 
     [HttpPut]
     [Route("update/{id}")]
     public async Task<ActionResult<TopicResponseDto>> UpdateTopic(Guid id, [FromBody]UpdateTopicRequestDto dto)
     {
-        return Ok(await topicsService.UpdateTopicAsync(id, dto));
+        return Ok(null);
+        //return Ok(await topicsService.UpdateTopicAsync(id, dto));
     }
 
     [HttpDelete]
     [Route("delete/{id}")]
     public async Task<ActionResult> DeleteTopic(Guid id)
     {
-        await topicsService.DeleteTopicAsync(id);
+        //await topicsService.DeleteTopicAsync(id);
         return NoContent();
     }
 }

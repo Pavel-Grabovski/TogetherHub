@@ -1,10 +1,11 @@
-﻿namespace Application.Topics;
+﻿namespace Application.Topics.Obsoletes;
 
+[Obsolete("All Obsolete", true)]
 public class TopicsService(
     IApplicationDbContext dbContext,
     ILogger<TopicsService> logger,
-    IMapper mapper) 
-    : ITopicsService
+    IMapper mapper)
+//: ITopicsService
 {
     public async Task<List<TopicResponseDto>> GetTopicsAsync()
     {
@@ -17,7 +18,7 @@ public class TopicsService(
 
         return topicsResponse;
     }
-    
+
 
     public async Task<TopicResponseDto> GetTopicByIdAsync(Guid id)
     {
@@ -25,7 +26,7 @@ public class TopicsService(
         Topic? topicDb = await dbContext.Topics
             .FindAsync(topicId);
 
-        if(topicDb is null || topicDb.IsDelete)
+        if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(id);
 
         TopicResponseDto responseDto = mapper.Map<TopicResponseDto>(topicDb);
@@ -61,11 +62,11 @@ public class TopicsService(
         topicDb.Title = topicRequestDto.Title ?? topicDb.Title;
         topicDb.Summary = topicRequestDto.Summary ?? topicDb.Summary;
         topicDb.TopicType = topicRequestDto.TopicType ?? topicDb.TopicType;
-        topicDb.Location =  Location.Of(
+        topicDb.Location = Location.Of(
             topicRequestDto.Location.City,
             topicRequestDto.Location.Street);
 
-        if(topicRequestDto.EventStart.HasValue 
+        if (topicRequestDto.EventStart.HasValue
             && topicRequestDto.EventStart.Value.Kind != DateTimeKind.Utc)
         {
             topicDb.EventStart = topicRequestDto.EventStart.Value.ToUniversalTime();

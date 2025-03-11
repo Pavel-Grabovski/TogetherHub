@@ -1,5 +1,6 @@
-﻿namespace Application.Topics;
+﻿namespace Application.Topics.Obsoletes;
 
+[Obsolete("All Obsolete", true)]
 public interface ITopicsService
 {
     public Task<List<TopicResponseDto>> GetTopicsAsync();

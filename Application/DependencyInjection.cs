@@ -10,7 +10,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<ITopicsService, TopicsService>();
+        //services.AddScoped<ITopicsService, TopicsService>();
         services.AddAutoMapper(typeof(MappingProfile));
      
         return services;
