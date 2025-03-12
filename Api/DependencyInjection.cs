@@ -1,4 +1,5 @@
 ﻿using Api.Extensions.Handlers;
+using Api.Security.Extensions;
 using Application.Topics.Queries.GetTopics;
 
 namespace Api;
@@ -17,8 +18,11 @@ public static class DependencyInjection
 
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
+
         services.AddMediatR(config => 
             config.RegisterServicesFromAssembly(typeof(GetTopicsHandler).Assembly));
+
+        services.AddIdentityServices(configuration);
 
         return services;
     }
