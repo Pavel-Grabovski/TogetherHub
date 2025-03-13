@@ -16,7 +16,7 @@ public class AuthController(
     : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<IResult> Login(LoginResponseDto dto)
+    public async Task<IResult> Login(LoginRequestDto dto)
     {
         CustomIdentityUser? user = await userManager.FindByEmailAsync(dto.Email);
 
