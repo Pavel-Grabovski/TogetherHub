@@ -1,6 +1,9 @@
 ﻿using Api.Security.Services;
 using Domain.Security;
 using Infrastructure.Data.DataBaseContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Api.Security.Extensions;
 
@@ -20,7 +23,22 @@ public static class IdentityOptionExtension
         })
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.AddAuthentication();
+        string secretKey = config["AuthSettings:SecretKey"]!;
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(secretKey));
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateLifetime = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
 
         services.AddScoped<IJwtSecurityService, JwtSecurityService>();
 

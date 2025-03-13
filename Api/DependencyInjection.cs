@@ -40,6 +40,7 @@ public static class DependencyInjection
         app.UseExceptionHandler( options => { });
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
