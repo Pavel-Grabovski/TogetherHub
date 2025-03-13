@@ -15,8 +15,7 @@ public class AuthController(
     IJwtSecurityService jwtSecurityService) 
     : ControllerBase
 {
-    [HttpPost]
-    [Route("login")]
+    [HttpPost("login")]
     public async Task<IResult> Login(LoginResponseDto dto)
     {
         CustomIdentityUser? user = await userManager.FindByEmailAsync(dto.Email);
@@ -37,5 +36,35 @@ public class AuthController(
         }
 
         return Results.Unauthorized();
+    }
+
+    [HttpPost("register")]
+    public async Task<IResult> Register(RegisterUserRequestDto dto)
+    {
+        if (await userManager.FindByEmailAsync(dto.Email) != null)
+            return Results.BadRequest("A user with this email already exists");
+
+        if (await userManager.FindByEmailAsync(dto.UserName) != null)
+            return Results.BadRequest("A user with this UserName already exists");
+
+        var user = new CustomIdentityUser
+        {
+            Email = dto.Email,
+            UserName = dto.UserName,
+        };
+
+        IdentityResult result = await userManager.CreateAsync(user, dto.Password);
+
+        if (result.Succeeded)
+        {
+            var response = new IdentityUserResponseDto(
+               user.UserName,
+               user.Email,
+               jwtSecurityService.CreateToken(user));
+
+            return Results.Ok(new { result = response });
+        }
+
+        return Results.BadRequest(result.Errors);
     }
 }
