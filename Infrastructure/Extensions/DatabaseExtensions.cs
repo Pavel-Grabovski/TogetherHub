@@ -52,7 +52,7 @@ public static class DatabaseExtensions
         if (!userManager.Users.Any())
         {
             foreach (var user in InitialData.IdentityUsers) 
-                await userManager.CreateAsync(user);
+                await userManager.CreateAsync(user, "1111");
         }
     }
 }
