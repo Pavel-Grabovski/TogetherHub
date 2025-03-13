@@ -18,7 +18,7 @@ public class AuthController(
     [HttpPost("login")]
     public async Task<IResult> Login(LoginRequestDto dto)
     {
-        CustomIdentityUser? user = await userManager.FindByEmailAsync(dto.Email);
+        CustomIdentityUser? user = await userManager.FindByEmailAsync(dto.Login);
 
         if (user == null)
             return Results.Unauthorized();
