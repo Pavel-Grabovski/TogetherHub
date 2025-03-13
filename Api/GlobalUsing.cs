@@ -9,3 +9,4 @@ global using Application.Topics.Queries.GetTopics;
 global using Infrastructure;
 global using Infrastructure.Extensions;
 global using MediatR;
+global using Api.Middleware;

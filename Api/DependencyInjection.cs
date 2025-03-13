@@ -37,6 +37,8 @@ public static class DependencyInjection
     public static WebApplication UseApiServices
         (this WebApplication app)
     {
+        app.UseMiddleware<ValidationMiddleware>();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
