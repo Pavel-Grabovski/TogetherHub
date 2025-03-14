@@ -21,10 +21,12 @@ public class RegisterHandler(
             UserName = request.Dto.UserName
         };
 
-        IdentityResult result = await userManager.CreateAsync(user, request.Dto.Password);
+        IdentityResult result = await userManager
+            .CreateAsync(user, request.Dto.Password);
 
         if (!result.Succeeded)
-            throw new BadRequestException(string.Join(";", result.Errors));
+            throw new BadRequestException(
+                string.Join(";", result.Errors.Select(e => e.Description)));
 
         var response = new IdentityUserResponseDto(
                user.UserName,
