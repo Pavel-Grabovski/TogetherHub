@@ -11,8 +11,8 @@ public class LoginHandler(
     {
         CustomIdentityUser? user = await userManager.Users
             .FirstOrDefaultAsync(
-              u => request.LoginRequest.Login == u.Email 
-                || request.LoginRequest.Login == u.UserName);
+              u => request.LoginRequest.Login.ToUpper() == u.NormalizedEmail 
+                || request.LoginRequest.Login.ToUpper() == u.NormalizedUserName);
 
         if (user == null)
             throw new UnauthorizedException();
