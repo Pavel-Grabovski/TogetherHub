@@ -9,7 +9,7 @@ namespace Application.Security.Services;
 public class JwtSecurityService(IConfiguration configuration)
     : IJwtSecurityService
 {
-    public string CreateToken(CustomIdentityUser user)
+    public string CreateToken(User user)
     {
         string secretKey = configuration["AuthSettings:SecretKey"]!;
 

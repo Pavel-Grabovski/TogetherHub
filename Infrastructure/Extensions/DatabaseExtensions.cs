@@ -15,9 +15,9 @@ public static class DatabaseExtensions
         ApplicationDbContext dbContext = scope.ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        UserManager<CustomIdentityUser> manager = scope
+        UserManager<User> manager = scope
             .ServiceProvider
-            .GetRequiredService<UserManager<CustomIdentityUser>>();
+            .GetRequiredService<UserManager<User>>();
 
         dbContext.Database
             .MigrateAsync()
@@ -29,7 +29,7 @@ public static class DatabaseExtensions
 
     private static async Task SeedData(
         ApplicationDbContext dbContext,
-        UserManager<CustomIdentityUser> userManager)
+        UserManager<User> userManager)
     {
         await SeedTopicAsync(dbContext);
         await SeedIdentityUsersAsync(dbContext, userManager);
@@ -47,7 +47,7 @@ public static class DatabaseExtensions
 
     private static async Task SeedIdentityUsersAsync(
         ApplicationDbContext dbContext,
-        UserManager<CustomIdentityUser> userManager)
+        UserManager<User> userManager)
     {
         if (!userManager.Users.Any())
         {

@@ -1,7 +1,7 @@
 ﻿namespace Application.Security.Queries.Login;
 
 public class LoginHandler(
-    UserManager<CustomIdentityUser> userManager,
+    UserManager<User> userManager,
     IJwtSecurityService jwtSecurityService)
     : IQueryHandler<LoginQuery, LoginResult>
 {
@@ -9,7 +9,7 @@ public class LoginHandler(
         LoginQuery request,
         CancellationToken cancellationToken)
     {
-        CustomIdentityUser? user = await userManager.Users
+        User? user = await userManager.Users
             .FirstOrDefaultAsync(
               u => request.LoginRequest.Login.ToUpper() == u.NormalizedEmail 
                 || request.LoginRequest.Login.ToUpper() == u.NormalizedUserName);

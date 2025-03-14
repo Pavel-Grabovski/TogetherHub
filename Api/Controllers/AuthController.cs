@@ -14,7 +14,7 @@ namespace Api.Controllers;
 [ApiController]
 public class AuthController(
     IMediator mediator,
-    UserManager<CustomIdentityUser> userManager,
+    UserManager<User> userManager,
     IJwtSecurityService jwtSecurityService) 
     : ControllerBase
 {

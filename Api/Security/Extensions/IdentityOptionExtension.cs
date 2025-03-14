@@ -13,7 +13,7 @@ public static class IdentityOptionExtension
         this IServiceCollection services,
         IConfiguration config)
     {
-        services.AddIdentityCore<CustomIdentityUser>(options =>
+        services.AddIdentityCore<User>(options =>
         {
             options.Password.RequireDigit = false;
             options.Password.RequiredLength = 1;

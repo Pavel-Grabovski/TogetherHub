@@ -1,7 +1,7 @@
 ﻿namespace Application.Security.Commands.Register;
 
 public class RegisterHandler(
-    UserManager<CustomIdentityUser> userManager,
+    UserManager<User> userManager,
     IJwtSecurityService jwtSecurityService)
     : IQueryHandler<RegisterQuery, RegisterResult>
 {
@@ -15,7 +15,7 @@ public class RegisterHandler(
         if (await userManager.FindByEmailAsync(request.Dto.UserName) != null)
             throw new BadRequestException("A user with this UserName already exists");
 
-        var user = new CustomIdentityUser
+        var user = new User
         {
             Email = request.Dto.Email,
             UserName = request.Dto.UserName
