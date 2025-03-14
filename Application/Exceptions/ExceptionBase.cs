@@ -10,5 +10,4 @@ public abstract class ExceptionBase : Exception
     public ExceptionBase()
     {
     }
-
 }
