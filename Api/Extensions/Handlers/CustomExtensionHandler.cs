@@ -17,11 +17,12 @@ public class CustomExtensionHandler(
 
         (string Detail, string Title, int StatusCode) details = exception switch
         {
-            NotFoundException => (
-                exception.Message,
-                exception.GetType().Name,
-                StatusCodes.Status404NotFound
+            ExceptionBase exceptionBase => (
+                exceptionBase.Message,
+                exceptionBase.GetType().Name,
+                exceptionBase.StatusCode
             ),
+
             _ => (
                 exception.Message,
                 exception.GetType().Name,
