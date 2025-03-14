@@ -1,9 +1,0 @@
-﻿using Domain.Security;
-
-namespace Api.Security.Services;
-
-[Obsolete("IJwtSecurityService был перенесен в application")]
-public interface IJwtSecurityService
-{
-    public string CreateToken(CustomIdentityUser user);
-}
