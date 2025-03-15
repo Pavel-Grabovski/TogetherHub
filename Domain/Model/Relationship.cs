@@ -5,7 +5,7 @@ namespace Domain.Model;
 
 public class Relationship : Entity<RelationshipId>
 {
-    public required TopicId TopicId { get; set; }
+    public required TopicId TopicReference { get; set; }
     public required Topic CurrentTopic { get; set; }
 
     public required string UserReference { get; set; }
@@ -26,7 +26,7 @@ public class Relationship : Entity<RelationshipId>
         return new Relationship
         {
             Id = id,
-            TopicId = topicId,
+            TopicReference = topicId,
             CurrentTopic = topic,
             UserReference = userId,
             CurrentUser = user,
