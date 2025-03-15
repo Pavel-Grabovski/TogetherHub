@@ -1,4 +1,5 @@
 ﻿using Application.Data.DataBaseContext;
+using Application.Security.Services;
 using Infrastructure.Data.DataBaseContext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,9 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserAccessor, UserAccessor>();
         return services;
     }
 }
