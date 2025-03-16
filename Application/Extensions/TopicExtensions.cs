@@ -14,6 +14,7 @@ public static class TopicExtensions
                 topic.Location.City,
                 topic.Location.City),
             EventStart: topic.EventStart,
+            IsVoided: topic.IsVoided,
             Users: topic.Users.Select(r => new UserProfileResponseDto(
                 Id: r.CurrentUser.Id,
                 UserName: r.CurrentUser.UserName!,
