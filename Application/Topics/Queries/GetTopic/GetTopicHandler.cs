@@ -11,7 +11,7 @@ public class GetTopicHandler(
             .AsNoTracking()
             .Include(t => t.Users)
             .ThenInclude(r => r.CurrentUser)
-            .FirstOrDefaultAsync(t => t.Id == topicId);
+            .FirstOrDefaultAsync(t => t.Id == topicId, cancellationToken);
 
         if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(request.Id);

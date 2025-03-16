@@ -13,7 +13,7 @@ public class GetTopicsHandler(
           .Include(t => t.Users)
           .ThenInclude(r => r.CurrentUser)
           .Where(t => !t.IsDelete)
-          .ToListAsync();
+          .ToListAsync(cancellationToken);
 
         List<TopicResponseDto> topicsResponse =
             topicsDb.ToTopicResponseDtoList();
