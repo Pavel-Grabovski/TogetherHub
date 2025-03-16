@@ -10,6 +10,8 @@ public class GetTopicsHandler(
     {
         List<Topic> topicsDb = await dbContext.Topics
           .AsNoTracking()
+          .Include(t => t.Users)
+          .ThenInclude(r => r.CurrentUser)
           .Where(t => !t.IsDelete)
           .ToListAsync();
 

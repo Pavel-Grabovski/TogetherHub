@@ -8,7 +8,10 @@ public class GetTopicHandler(
     {
         TopicId topicId = TopicId.Of(request.Id);
         Topic? topicDb = await dbContext.Topics
-            .FindAsync(topicId);
+            .AsNoTracking()
+            .Include(t => t.Users)
+            .ThenInclude(r => r.CurrentUser)
+            .FirstOrDefaultAsync(t => t.Id == topicId);
 
         if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(request.Id);
