@@ -1,31 +1,25 @@
 ﻿using Application.Security.Commands.Register;
 using Application.Security.Queries.Login;
-using Application.Security.Services;
-using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [AllowAnonymous]
-[Route("api/[controller]")]
 [ApiController]
-public class AuthController(
-    IMediator mediator,
-    UserManager<User> userManager,
-    IJwtSecurityService jwtSecurityService) 
+[Route("api/auth")]
+public class AuthController(IMediator mediator) 
     : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<IResult> Login(LoginRequestDto dto)
+    public async Task<IResult> Login(LoginRequestDto dto, CancellationToken cancellationToken)
     {                   
-        return Results.Ok(await mediator.Send(new LoginQuery(dto)));
+        return Results.Ok(await mediator.Send(new LoginQuery(dto), cancellationToken));
     }
 
     [HttpPost("register")]
-    public async Task<IResult> Register(RegisterUserRequestDto dto)
+    public async Task<IResult> Register(RegisterUserRequestDto dto, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new RegisterQuery(dto)));
+        return Results.Ok(await mediator.Send(new RegisterQuery(dto), cancellationToken));
     }
 }
