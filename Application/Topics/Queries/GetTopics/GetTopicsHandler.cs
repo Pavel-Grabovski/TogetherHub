@@ -1,8 +1,7 @@
 ﻿namespace Application.Topics.Queries.GetTopics;
 
 public class GetTopicsHandler(
-    IApplicationDbContext dbContext,
-    IMapper mapper)
+    IApplicationDbContext dbContext)
     : IQueryHandler<GetTopicsQuery, GetTopicsResult>
 {
     public async Task<GetTopicsResult> Handle(
@@ -15,7 +14,7 @@ public class GetTopicsHandler(
           .ToListAsync();
 
         List<TopicResponseDto> topicsResponse =
-            mapper.Map<List<TopicResponseDto>>(topicsDb);
+            topicsDb.ToTopicResponseDtoList();
 
         return new GetTopicsResult(topicsResponse);
     }

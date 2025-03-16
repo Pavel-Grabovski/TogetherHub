@@ -9,7 +9,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddAutoMapper(typeof(MappingProfile));
      
         return services;
     }

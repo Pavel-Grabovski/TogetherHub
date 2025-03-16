@@ -2,9 +2,7 @@
 global using Application.Dtos;
 global using Application.Exceptions;
 global using Application.Extensions;
-global using Application.Mapper;
 global using Application.Security.Services;
-global using AutoMapper;
 global using Domain.Model;
 global using Domain.Security;
 global using Domain.ValueObjects;

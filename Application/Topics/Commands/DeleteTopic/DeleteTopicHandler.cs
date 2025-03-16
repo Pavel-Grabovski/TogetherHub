@@ -2,8 +2,7 @@
 namespace Application.Topics.Commands.DeleteTopic;
 
 public class DeleteTopicHandler(
-    IApplicationDbContext dbContext,
-    IMapper mapper)
+    IApplicationDbContext dbContext)
     : ICommandHandler<DeleteTopicCommand, DeleteTopicResult>
 {
     public async Task<DeleteTopicResult> Handle(

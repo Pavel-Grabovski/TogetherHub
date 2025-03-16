@@ -1,8 +1,7 @@
 ﻿namespace Application.Topics.Queries.GetTopic;
 
 public class GetTopicHandler(
-    IApplicationDbContext dbContext,
-    IMapper mapper)
+    IApplicationDbContext dbContext)
     : IQueryHandler<GetTopicQuery, GetTopicResult>
 {
     public async Task<GetTopicResult> Handle(GetTopicQuery request, CancellationToken cancellationToken)
@@ -14,7 +13,7 @@ public class GetTopicHandler(
         if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(request.Id);
 
-        TopicResponseDto responseDto = mapper.Map<TopicResponseDto>(topicDb);
+        TopicResponseDto responseDto = topicDb.ToTopicResponseDto();
 
         return new GetTopicResult(responseDto);
     }

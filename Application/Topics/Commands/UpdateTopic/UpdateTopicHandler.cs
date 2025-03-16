@@ -2,8 +2,7 @@
 namespace Application.Topics.Commands.UpdateTopic;
 
 public class UpdateTopicHandler(
-    IApplicationDbContext dbContext,
-    IMapper mapper)
+    IApplicationDbContext dbContext)
     : ICommandHandler<UpdateTopicCommand, UpdateTopicResult>
 {
     public async Task<UpdateTopicResult> Handle(
@@ -21,7 +20,7 @@ public class UpdateTopicHandler(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new UpdateTopicResult(mapper.Map<TopicResponseDto>(topicDb));
+        return new UpdateTopicResult(topicDb.ToTopicResponseDto());
     }
 
     private static Topic UpdateTopic(Topic topicDb, UpdateTopicCommand request)
