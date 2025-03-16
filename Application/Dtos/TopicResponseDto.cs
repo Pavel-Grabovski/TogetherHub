@@ -7,5 +7,5 @@ public record TopicResponseDto(
     string TopicType,
     LocationResponseDto Location,
     DateTime? EventStart,
-    List<Relationship> Users
+    List<UserProfileResponseDto> Users
 );

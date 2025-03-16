@@ -4,8 +4,7 @@ namespace Application.Topics.Commands.CreateTopic;
 
 public class CreateTopicHandler(
     IApplicationDbContext dbContext,
-    IUserAccessor userAccessor,
-    IMapper mapper)
+    IUserAccessor userAccessor)
     : ICommandHandler<CreateTopicCommand, CreateTopicResult>
 {
     public async Task<CreateTopicResult> Handle(
@@ -31,7 +30,7 @@ public class CreateTopicHandler(
         dbContext.Topics.Add(newTopic);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new CreateTopicResult(mapper.Map<TopicResponseDto>(newTopic));
+        return new CreateTopicResult(newTopic.ToTopicResponseDto());
     }
 
     private Topic CreateTopic(CreateTopicRequestDto dto)

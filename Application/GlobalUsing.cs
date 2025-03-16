@@ -1,6 +1,7 @@
 ﻿global using Application.Data.DataBaseContext;
 global using Application.Dtos;
 global using Application.Exceptions;
+global using Application.Extensions;
 global using Application.Mapper;
 global using Application.Security.Services;
 global using AutoMapper;
