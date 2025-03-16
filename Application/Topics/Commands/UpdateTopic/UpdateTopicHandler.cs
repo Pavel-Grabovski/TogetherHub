@@ -1,8 +1,9 @@
-﻿
-namespace Application.Topics.Commands.UpdateTopic;
+﻿namespace Application.Topics.Commands.UpdateTopic;
 
 public class UpdateTopicHandler(
-    IApplicationDbContext dbContext)
+    IApplicationDbContext dbContext,
+    UserManager<User> userManager,
+    IUserAccessor userAccessor)
     : ICommandHandler<UpdateTopicCommand, UpdateTopicResult>
 {
     public async Task<UpdateTopicResult> Handle(
@@ -10,11 +11,27 @@ public class UpdateTopicHandler(
         CancellationToken cancellationToken)
     {
         TopicId topicId = TopicId.Of(request.Id);
+
         Topic? topicDb = await dbContext.Topics
-           .FindAsync(topicId, cancellationToken);
+           .AsNoTracking()
+           .Include(t => t.Users)
+           .ThenInclude(r => r.CurrentUser)
+           .FirstOrDefaultAsync(t => t.Id == topicId, cancellationToken);
 
         if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(request.Id);
+
+        string userId= userAccessor.GetUserId();
+        User? user = await userManager.FindByIdAsync(userId);
+
+        if (user is null) 
+            throw new UserNotFoundException(userId);
+
+        bool isOrganizer = topicDb.Users
+            .Any(u => u.UserReference == userId && u.Role == ParticipantRole.Organizer);
+
+        if (!isOrganizer)
+            throw new UserNotOrganizerException(topicId.Value, userId);
 
         topicDb = UpdateTopic(topicDb, request);
 
