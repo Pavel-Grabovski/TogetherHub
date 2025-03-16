@@ -20,7 +20,7 @@ public class CustomExtensionHandler(
             ExceptionBase exceptionBase => (
                 exceptionBase.Message,
                 exceptionBase.GetType().Name,
-                exceptionBase.StatusCode
+                httpContext.Response.StatusCode = exceptionBase.StatusCode
             ),
 
             _ => (
