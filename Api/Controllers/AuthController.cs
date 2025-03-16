@@ -2,7 +2,6 @@
 using Application.Security.Queries.Login;
 using Application.Security.Services;
 using Domain.Security;
-using Domain.Security.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

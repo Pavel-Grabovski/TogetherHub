@@ -6,7 +6,6 @@ global using Application.Security.Services;
 global using AutoMapper;
 global using Domain.Model;
 global using Domain.Security;
-global using Domain.Security.Dtos;
 global using Domain.ValueObjects;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.EntityFrameworkCore;
