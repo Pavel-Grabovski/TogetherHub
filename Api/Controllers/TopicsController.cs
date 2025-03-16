@@ -2,26 +2,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/topics")]
 [ApiController]
-public class TopicsController
-    (IMediator mediator) 
+public class TopicsController(IMediator mediator) 
     : ControllerBase
 {
     [HttpGet]
-    public async Task<IResult> GetTopics()
+    public async Task<IResult> GetTopics(CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new GetTopicsQuery()));
+        return Results.Ok(await mediator.Send(new GetTopicsQuery(), cancellationToken));
     }
 
     [HttpGet("{id}")]
-    public async Task<IResult> GetTopic(Guid id)
+    public async Task<IResult> GetTopic(Guid id, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new GetTopicQuery(id)));
+        return Results.Ok(await mediator.Send(new GetTopicQuery(id), cancellationToken));
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
     public async Task<IResult> CreateTopic(CreateTopicRequestDto dto)
     {
         CreateTopicResult result = await mediator.Send(new CreateTopicCommand(dto));
@@ -30,19 +28,18 @@ public class TopicsController
         return Results.Created(uri, result);
     }
 
-    [HttpPut]
-    [Route("update/{id}")]
+    [HttpPut("update/{id}")]
     public async Task<IResult> UpdateTopic(
         Guid id,
-        [FromBody]UpdateTopicRequestDto dto)
+        [FromBody]UpdateTopicRequestDto dto,
+        CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new UpdateTopicCommand(id, dto)));
+        return Results.Ok(await mediator.Send(new UpdateTopicCommand(id, dto), cancellationToken));
     }
 
-    [HttpDelete]
-    [Route("delete/{id}")]
-    public async Task<IResult> DeleteTopic(Guid id)
+    [HttpDelete("delete/{id}")]
+    public async Task<IResult> DeleteTopic(Guid id, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new DeleteTopicCommand(id)));
+        return Results.Ok(await mediator.Send(new DeleteTopicCommand(id), cancellationToken));
     }
 }
