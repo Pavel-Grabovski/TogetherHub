@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-
-namespace Application.Topics.Commands.CreateTopic;
+﻿namespace Application.Topics.Commands.CreateTopic;
 
 public class CreateTopicHandler(
     IApplicationDbContext dbContext,
@@ -12,7 +10,7 @@ public class CreateTopicHandler(
         CancellationToken cancellationToken)
     {
         User user = await dbContext.Users
-            .FirstAsync(us => us.UserName == userAccessor.GetUsername());
+            .FirstAsync(us => us.UserName == userAccessor.GetUsername(), cancellationToken);
 
         Topic newTopic = CreateTopic(command.CreateTopicRequestDto);
 
