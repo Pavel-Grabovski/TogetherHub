@@ -3,10 +3,10 @@
 public class RegisterHandler(
     UserManager<User> userManager,
     IJwtSecurityService jwtSecurityService)
-    : IQueryHandler<RegisterQuery, RegisterResult>
+    : ICommandHandler<RegisterCommand, RegisterResult>
 {
     public async Task<RegisterResult> Handle(
-        RegisterQuery request,
+        RegisterCommand request,
         CancellationToken cancellationToken)
     {
         if (await userManager.FindByEmailAsync(request.Dto.Email) != null)

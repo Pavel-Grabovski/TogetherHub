@@ -20,6 +20,6 @@ public class AuthController(IMediator mediator)
     [HttpPost("register")]
     public async Task<IResult> Register(RegisterUserRequestDto dto, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new RegisterQuery(dto), cancellationToken));
+        return Results.Ok(await mediator.Send(new RegisterCommand(dto), cancellationToken));
     }
 }
