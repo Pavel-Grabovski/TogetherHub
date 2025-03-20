@@ -1,5 +1,4 @@
-﻿using Api.Extensions.Handlers;
-using Api.Security.Extensions;
+﻿using Api.Security.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -11,7 +10,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddExceptionHandler<CustomExtensionHandler>();
+        services.AddExceptionHandler<ExtensionHandler>();
         services.AddControllers(options =>
         {
             var policy = new AuthorizationPolicyBuilder()
