@@ -7,7 +7,7 @@ namespace Api.Controllers;
 
 [AllowAnonymous]
 [ApiController]
-[Route("api/auth")]
+[Route("api/[controller]")]
 public class AuthController(IMediator mediator) 
     : ControllerBase
 {

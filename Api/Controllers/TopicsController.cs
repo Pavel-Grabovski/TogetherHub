@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/topics")]
+[Route("api/[controller]")]
 [ApiController]
 public class TopicsController(IMediator mediator) 
     : ControllerBase
