@@ -24,7 +24,7 @@ public class LoginHandler(
         if (!result)
             throw new UnauthorizedException();
 
-        IdentityUserResponseDto response = new IdentityUserResponseDto(
+        UserResponseDto response = new UserResponseDto(
                 user.UserName,
                 user.Email,
                 jwtSecurityService.CreateToken(user));

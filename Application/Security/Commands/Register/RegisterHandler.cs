@@ -28,7 +28,7 @@ public class RegisterHandler(
             throw new BadRequestException(
                 string.Join(";", result.Errors.Select(e => e.Description)));
 
-        var response = new IdentityUserResponseDto(
+        var response = new UserResponseDto(
                user.UserName,
                user.Email,
                jwtSecurityService.CreateToken(user));

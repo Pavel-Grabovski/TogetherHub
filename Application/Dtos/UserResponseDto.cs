@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos;
 
-public record IdentityUserResponseDto
+public record UserResponseDto
 (
     string UserName,
     string Email,

@@ -1,3 +1,3 @@
 ﻿namespace Application.Security.Commands.Register;
 
-public record RegisterResult(IdentityUserResponseDto IdentityUserResponse);
+public record RegisterResult(UserResponseDto IdentityUserResponse);
