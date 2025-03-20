@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Security.Claims;
+using System.Text;
+using Application.Security.Services;
+using Domain.Security;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Text;
 
-namespace Application.Security.Services;
+namespace Infrastructure.Security.Services;
 
 public class JwtSecurityService(IConfiguration configuration)
     : IJwtSecurityService
