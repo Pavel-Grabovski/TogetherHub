@@ -1,3 +1,4 @@
+using Application.Topics.Commands.JoinLeaveTopic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -41,5 +42,11 @@ public class TopicsController(IMediator mediator)
     public async Task<IResult> DeleteTopic(Guid id, CancellationToken cancellationToken)
     {
         return Results.Ok(await mediator.Send(new DeleteTopicCommand(id), cancellationToken));
+    }
+
+    [HttpPost("join/{id}")]
+    public async Task<IResult> JoinLeaveTopic(Guid id, CancellationToken cancellationToken)
+    {
+        return Results.Ok(await mediator.Send(new JoinLeaveTopicCommand(id)));
     }
 }
