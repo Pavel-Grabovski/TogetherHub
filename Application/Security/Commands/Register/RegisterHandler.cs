@@ -1,0 +1,38 @@
+﻿namespace Application.Security.Commands.Register;
+
+public class RegisterHandler(
+    UserManager<User> userManager,
+    IJwtSecurityService jwtSecurityService)
+    : IQueryHandler<RegisterQuery, RegisterResult>
+{
+    public async Task<RegisterResult> Handle(
+        RegisterQuery request,
+        CancellationToken cancellationToken)
+    {
+        if (await userManager.FindByEmailAsync(request.Dto.Email) != null)
+            throw new BadRequestException("A user with this email already exists");
+
+        if (await userManager.FindByEmailAsync(request.Dto.UserName) != null)
+            throw new BadRequestException("A user with this UserName already exists");
+
+        var user = new User
+        {
+            Email = request.Dto.Email,
+            UserName = request.Dto.UserName
+        };
+
+        IdentityResult result = await userManager
+            .CreateAsync(user, request.Dto.Password);
+
+        if (!result.Succeeded)
+            throw new BadRequestException(
+                string.Join(";", result.Errors.Select(e => e.Description)));
+
+        var response = new IdentityUserResponseDto(
+               user.UserName,
+               user.Email,
+               jwtSecurityService.CreateToken(user));
+
+        return new RegisterResult(response);
+    }
+}

@@ -1,15 +1,15 @@
-﻿using Domain.Security;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 
-namespace Api.Security.Services;
+namespace Application.Security.Services;
 
 public class JwtSecurityService(IConfiguration configuration)
     : IJwtSecurityService
 {
-    public string CreateToken(CustomIdentityUser user)
+    public string CreateToken(User user)
     {
         string secretKey = configuration["AuthSettings:SecretKey"]!;
 
@@ -21,9 +21,9 @@ public class JwtSecurityService(IConfiguration configuration)
             new Claim("IsPremium", "true"),
         };
 
-        SymmetricSecurityKey key = new (Encoding.UTF8.GetBytes(secretKey));
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(secretKey));
 
-        SigningCredentials creds = new (key, SecurityAlgorithms.HmacSha512Signature);
+        SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenHandler = new JsonWebTokenHandler();
 

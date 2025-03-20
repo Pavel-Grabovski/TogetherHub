@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Infrastructure.Data.DataBaseContext;
 
-public class ApplicationDbContext : IdentityDbContext<CustomIdentityUser>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbContext
 {
     public DbSet<Topic> Topics
     {

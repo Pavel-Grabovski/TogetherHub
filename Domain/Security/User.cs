@@ -2,7 +2,7 @@
 
 namespace Domain.Security;
 
-public class CustomIdentityUser : IdentityUser
+public class User : IdentityUser
 {
     public string? FullName { get; set; }
     public string? About { get; set; }
