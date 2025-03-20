@@ -1,5 +1,4 @@
-﻿using Api.Security.Extensions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Api;
@@ -28,9 +27,6 @@ public static class DependencyInjection
 
         services.AddMediatR(config => 
             config.RegisterServicesFromAssembly(typeof(GetTopicsHandler).Assembly));
-
-        services.AddIdentityServices(configuration);
-
         return services;
     }
 
