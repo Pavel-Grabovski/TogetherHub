@@ -6,20 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [AllowAnonymous]
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController(IMediator mediator) 
-    : ControllerBase
+public class AuthController: TogetherControllerBase
 {
     [HttpPost("login")]
     public async Task<IResult> Login(LoginRequestDto dto, CancellationToken cancellationToken)
     {                   
-        return Results.Ok(await mediator.Send(new LoginQuery(dto), cancellationToken));
+        return Results.Ok(await Mediator.Send(new LoginQuery(dto), cancellationToken));
     }
 
     [HttpPost("register")]
     public async Task<IResult> Register(RegisterUserRequestDto dto, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new RegisterCommand(dto), cancellationToken));
+        return Results.Ok(await Mediator.Send(new RegisterCommand(dto), cancellationToken));
     }
 }
