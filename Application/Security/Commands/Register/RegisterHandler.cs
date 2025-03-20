@@ -12,7 +12,7 @@ public class RegisterHandler(
         if (await userManager.FindByEmailAsync(request.Dto.Email) != null)
             throw new BadRequestException("A user with this email already exists");
 
-        if (await userManager.FindByEmailAsync(request.Dto.UserName) != null)
+        if (await userManager.FindByNameAsync(request.Dto.UserName) != null)
             throw new BadRequestException("A user with this UserName already exists");
 
         var user = new User
