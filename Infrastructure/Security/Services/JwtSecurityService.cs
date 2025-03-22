@@ -1,7 +1,4 @@
-﻿using System.Security.Claims;
-using System.Text;
-using Application.Security.Services;
-using Domain.Security;
+﻿using Application.Security.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;

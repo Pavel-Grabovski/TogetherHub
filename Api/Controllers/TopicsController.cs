@@ -1,5 +1,6 @@
 using Api.Controllers;
 using Application.Topics.Commands.JoinLeaveTopic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -37,6 +38,7 @@ public class TopicsController : TogetherControllerBase
     }
 
     [HttpDelete("delete/{id}")]
+    [Authorize(Policy = "IsTopicAuthor")]
     public async Task<IResult> DeleteTopic(Guid id, CancellationToken cancellationToken)
     {
         return Results.Ok(await Mediator.Send(new DeleteTopicCommand(id), cancellationToken));
