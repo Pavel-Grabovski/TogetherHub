@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Api;
@@ -33,7 +34,23 @@ public static class DependencyInjection
     public static WebApplication UseApiServices
         (this WebApplication app)
     {
-        app.UseMiddleware<ValidationMiddleware>();
+        //app.UseMiddleware<ValidationMiddleware>();
+
+        app.UseStatusCodePages(async context =>
+        {
+            if (context.HttpContext.Response.StatusCode == 403)
+            {
+                var detail = new ProblemDetails
+                {
+                    Title = "Forbidden",
+                    Detail = "You do not have sufficient rights to perform this action.",
+                    Status = StatusCodes.Status403Forbidden,
+                    Instance = context.HttpContext.Request.Path
+                };
+                detail.Extensions.Add("TraceId:", context.HttpContext.TraceIdentifier);
+                await context.HttpContext.Response.WriteAsJsonAsync(detail);
+            }
+        });
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
