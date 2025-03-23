@@ -25,7 +25,8 @@ public class Comment : Entity<CommentId>
             AuthorId = author.Id,
             CurrentTopic = topic, 
             CurrentTopicId = topic.Id,
-            Text = text
+            Text = text,
+            CreationTime = DateTime.UtcNow
         };
     }
 }

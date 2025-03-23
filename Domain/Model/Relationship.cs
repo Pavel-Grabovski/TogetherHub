@@ -28,6 +28,7 @@ public class Relationship : Entity<RelationshipId>
             UserReference = userId,
             CurrentUser = user,
             Role = role,
+            CreationTime = DateTime.UtcNow
         };
     }
 }

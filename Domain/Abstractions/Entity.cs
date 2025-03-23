@@ -6,7 +6,7 @@ public abstract class Entity<T> : IEntity
 
     public bool IsDelete { get; set; }
 
-    public DateTime CreationTime { get; set; }
+    public required DateTime CreationTime { get; set; }
 
     public DateTime? DeletionTime { get; set; }
 }
