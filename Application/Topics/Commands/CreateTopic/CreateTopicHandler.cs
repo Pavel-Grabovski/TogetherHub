@@ -12,7 +12,7 @@ public class CreateTopicHandler(
         User user = await dbContext.Users
             .FirstAsync(us => us.UserName == userAccessor.GetUsername(), cancellationToken);
 
-        Topic newTopic = CreateTopic(command.CreateTopicRequestDto);
+        Topic newTopic = CreateTopic(command.CreateTopicRequestDto, user.Id);
 
         Relationship relationship = Relationship.Create(
             id: RelationshipId.Of(Guid.NewGuid()),
@@ -31,15 +31,16 @@ public class CreateTopicHandler(
         return new CreateTopicResult(newTopic.ToTopicResponseDto());
     }
 
-    private Topic CreateTopic(CreateTopicRequestDto dto)
+    private Topic CreateTopic(CreateTopicRequestDto dto, string authorId)
     {
         return Topic.Create(
-            TopicId.Of(Guid.NewGuid()),
-            dto.Title,
-            dto.EventStart,
-            dto.Summary,
-            dto.TopicType,
-            Location.Of(dto.Location.City, dto.Location.Street)
+            id: TopicId.Of(Guid.NewGuid()),
+            title: dto.Title,
+            eventStart: dto.EventStart,
+            summary: dto.Summary,
+            topicType: dto.TopicType,
+            authorId: authorId,
+            location: Location.Of(dto.Location.City, dto.Location.Street)
         );
     }
 }
