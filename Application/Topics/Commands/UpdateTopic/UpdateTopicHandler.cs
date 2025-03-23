@@ -14,8 +14,6 @@ public class UpdateTopicHandler(
 
         Topic? topicDb = await dbContext.Topics
            .AsNoTracking()
-           .Include(t => t.Users)
-           .ThenInclude(r => r.CurrentUser)
            .FirstOrDefaultAsync(t => t.Id == topicId, cancellationToken);
 
         if (topicDb is null || topicDb.IsDelete)
@@ -27,10 +25,7 @@ public class UpdateTopicHandler(
         if (user is null) 
             throw new UserNotFoundException(userId);
 
-        bool isOrganizer = topicDb.Users
-            .Any(u => u.UserReference == userId && u.Role == ParticipantRole.Organizer);
-
-        if (!isOrganizer)
+        if (topicDb.AuthorId != userId)
             throw new UserNotOrganizerException(topicId.Value, userId);
 
         topicDb = UpdateTopic(topicDb, request);
