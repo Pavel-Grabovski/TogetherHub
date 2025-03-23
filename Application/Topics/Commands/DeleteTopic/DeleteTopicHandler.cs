@@ -29,6 +29,16 @@ public class DeleteTopicHandler(
         topicDb.IsDelete = true;
         topicDb.DeletionTime = DateTime.UtcNow;
 
+        Relationship[] relationships = await dbContext.Relationships
+            .Where(r => r.TopicReference == topicId)
+            .ToArrayAsync();
+
+        foreach(Relationship relationship in relationships)
+        {
+            relationship.IsDelete = true;
+            relationship.DeletionTime = DateTime.UtcNow;
+        }
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new DeleteTopicResult(true);
