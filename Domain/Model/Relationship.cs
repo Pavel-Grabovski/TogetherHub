@@ -1,7 +1,4 @@
-﻿using Domain.Enums;
-using Domain.Security;
-
-namespace Domain.Model;
+﻿namespace Domain.Model;
 
 public class Relationship : Entity<RelationshipId>
 {
