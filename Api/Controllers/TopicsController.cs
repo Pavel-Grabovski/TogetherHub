@@ -1,48 +1,52 @@
+using Api.Controllers;
+using Application.Topics.Commands.JoinLeaveTopic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class TopicsController
-    (IMediator mediator) 
-    : ControllerBase
+public class TopicsController : TogetherControllerBase
 {
     [HttpGet]
-    public async Task<IResult> GetTopics()
+    public async Task<IResult> GetTopics(CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new GetTopicsQuery()));
+        return Results.Ok(await Mediator.Send(new GetTopicsQuery(), cancellationToken));
     }
 
     [HttpGet("{id}")]
-    public async Task<IResult> GetTopic(Guid id)
+    public async Task<IResult> GetTopic(Guid id, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new GetTopicQuery(id)));
+        return Results.Ok(await Mediator.Send(new GetTopicQuery(id), cancellationToken));
     }
 
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
     public async Task<IResult> CreateTopic(CreateTopicRequestDto dto)
     {
-        CreateTopicResult result = await mediator.Send(new CreateTopicCommand(dto));
+        CreateTopicResult result = await Mediator.Send(new CreateTopicCommand(dto));
         string uri = $"/topics/{result.Result.Id}";
 
         return Results.Created(uri, result);
     }
 
-    [HttpPut]
-    [Route("update/{id}")]
+    [HttpPut("update/{id}")]
     public async Task<IResult> UpdateTopic(
         Guid id,
-        [FromBody]UpdateTopicRequestDto dto)
+        [FromBody]UpdateTopicRequestDto dto,
+        CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new UpdateTopicCommand(id, dto)));
+        return Results.Ok(await Mediator.Send(new UpdateTopicCommand(id, dto), cancellationToken));
     }
 
-    [HttpDelete]
-    [Route("delete/{id}")]
-    public async Task<IResult> DeleteTopic(Guid id)
+    [HttpDelete("delete/{id}")]
+    [Authorize(Policy = "IsTopicAuthor")]
+    public async Task<IResult> DeleteTopic(Guid id, CancellationToken cancellationToken)
     {
-        return Results.Ok(await mediator.Send(new DeleteTopicCommand(id)));
+        return Results.Ok(await Mediator.Send(new DeleteTopicCommand(id), cancellationToken));
+    }
+
+    [HttpPost("join/{id}")]
+    public async Task<IResult> JoinLeaveTopic(Guid id, CancellationToken cancellationToken)
+    {
+        return Results.Ok(await Mediator.Send(new JoinLeaveTopicCommand(id)));
     }
 }

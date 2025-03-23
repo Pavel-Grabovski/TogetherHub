@@ -1,4 +1,11 @@
-﻿global using Domain.Model;
+﻿global using System.Security.Claims;
+global using System.Text;
+global using Application.Data.DataBaseContext;
+global using Domain.Model;
+global using Domain.Security;
 global using Domain.ValueObjects;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Routing;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

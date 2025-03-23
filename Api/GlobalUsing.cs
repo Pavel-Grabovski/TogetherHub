@@ -1,4 +1,5 @@
 ﻿global using Api;
+global using Api.Middleware;
 global using Application.Dtos;
 global using Application.Exceptions;
 global using Application.Topics.Commands.CreateTopic;
@@ -9,4 +10,3 @@ global using Application.Topics.Queries.GetTopics;
 global using Infrastructure;
 global using Infrastructure.Extensions;
 global using MediatR;
-global using Api.Middleware;

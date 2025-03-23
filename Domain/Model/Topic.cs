@@ -2,12 +2,14 @@
 
 public class Topic : Entity<TopicId>
 {
-    public required string Title { get; set; } = default!;
-    public DateTime? EventStart { get; set; } = default!;
-    public required string Summary { get; set; } = default!;
-    public required string TopicType { get; set; } = default!;
-    public required Location Location { get; set; } = default!;
-
+    public required string Title { get; set; }
+    public DateTime? EventStart { get; set; }
+    public required string Summary { get; set; }
+    public required string TopicType { get; set; }
+    public required Location Location { get; set; }
+    public required string AuthorId { get; set; }
+    public bool IsVoided { get; set; }
+    public List<Relationship> Users { get; set; } = new ();
 
     public static Topic Create(
         TopicId id,
@@ -15,11 +17,13 @@ public class Topic : Entity<TopicId>
         DateTime eventStart,
         string summary,
         string topicType,
-        Location location)
+        string authorId,
+        Location location) 
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
         ArgumentException.ThrowIfNullOrWhiteSpace(summary);
         ArgumentException.ThrowIfNullOrWhiteSpace(topicType);
+        ArgumentException.ThrowIfNullOrWhiteSpace(authorId);
 
         if (eventStart.Kind != DateTimeKind.Utc)
             eventStart = eventStart.ToUniversalTime();
@@ -31,7 +35,9 @@ public class Topic : Entity<TopicId>
             EventStart = eventStart,
             Summary = summary,
             TopicType = topicType,
-            Location = location
+            Location = location,
+            AuthorId = authorId,
+            CreationTime = DateTime.UtcNow
         };
 
         return topic;

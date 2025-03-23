@@ -2,30 +2,45 @@
 
 public class CreateTopicHandler(
     IApplicationDbContext dbContext,
-    IMapper mapper)
+    IUserAccessor userAccessor)
     : ICommandHandler<CreateTopicCommand, CreateTopicResult>
 {
     public async Task<CreateTopicResult> Handle(
         CreateTopicCommand command,
         CancellationToken cancellationToken)
     {
-        Topic newTopic = CreateTopic(command.CreateTopicRequestDto);
+        User user = await dbContext.Users
+            .FirstAsync(us => us.UserName == userAccessor.GetUsername(), cancellationToken);
+
+        Topic newTopic = CreateTopic(command.CreateTopicRequestDto, user.Id);
+
+        Relationship relationship = Relationship.Create(
+            id: RelationshipId.Of(Guid.NewGuid()),
+            userId: user.Id,
+            user: user,
+            role: ParticipantRole.Organizer,
+            topicId: newTopic.Id,
+            topic: newTopic
+        );
+
+        newTopic.Users.Add(relationship);
 
         dbContext.Topics.Add(newTopic);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new CreateTopicResult(mapper.Map<TopicResponseDto>(newTopic));
+        return new CreateTopicResult(newTopic.ToTopicResponseDto());
     }
 
-    private Topic CreateTopic(CreateTopicRequestDto dto)
+    private Topic CreateTopic(CreateTopicRequestDto dto, string authorId)
     {
         return Topic.Create(
-            TopicId.Of(Guid.NewGuid()),
-            dto.Title,
-            dto.EventStart,
-            dto.Summary,
-            dto.TopicType,
-            Location.Of(dto.Location.City, dto.Location.Street)
+            id: TopicId.Of(Guid.NewGuid()),
+            title: dto.Title,
+            eventStart: dto.EventStart,
+            summary: dto.Summary,
+            topicType: dto.TopicType,
+            authorId: authorId,
+            location: Location.Of(dto.Location.City, dto.Location.Street)
         );
     }
 }

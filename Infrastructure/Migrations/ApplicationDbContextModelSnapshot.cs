@@ -22,10 +22,51 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Model.Relationship", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TopicReference")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserReference")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicReference");
+
+                    b.HasIndex("UserReference");
+
+                    b.ToTable("Relationships");
+                });
+
             modelBuilder.Entity("Domain.Model.Topic", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("timestamp with time zone");
@@ -34,6 +75,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsVoided")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Summary")
@@ -53,7 +97,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Topics");
                 });
 
-            modelBuilder.Entity("Domain.Security.CustomIdentityUser", b =>
+            modelBuilder.Entity("Domain.Security.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -255,6 +299,25 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Model.Relationship", b =>
+                {
+                    b.HasOne("Domain.Model.Topic", "CurrentTopic")
+                        .WithMany("Users")
+                        .HasForeignKey("TopicReference")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Security.User", "CurrentUser")
+                        .WithMany("Topics")
+                        .HasForeignKey("UserReference")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrentTopic");
+
+                    b.Navigation("CurrentUser");
+                });
+
             modelBuilder.Entity("Domain.Model.Topic", b =>
                 {
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
@@ -295,7 +358,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Security.CustomIdentityUser", null)
+                    b.HasOne("Domain.Security.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,7 +367,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.Security.CustomIdentityUser", null)
+                    b.HasOne("Domain.Security.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,7 +382,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Security.CustomIdentityUser", null)
+                    b.HasOne("Domain.Security.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,11 +391,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.Security.CustomIdentityUser", null)
+                    b.HasOne("Domain.Security.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Model.Topic", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Domain.Security.User", b =>
+                {
+                    b.Navigation("Topics");
                 });
 #pragma warning restore 612, 618
         }

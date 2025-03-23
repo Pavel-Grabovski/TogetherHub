@@ -3,16 +3,16 @@
 public class RegisterHandler(
     UserManager<User> userManager,
     IJwtSecurityService jwtSecurityService)
-    : IQueryHandler<RegisterQuery, RegisterResult>
+    : ICommandHandler<RegisterCommand, RegisterResult>
 {
     public async Task<RegisterResult> Handle(
-        RegisterQuery request,
+        RegisterCommand request,
         CancellationToken cancellationToken)
     {
         if (await userManager.FindByEmailAsync(request.Dto.Email) != null)
             throw new BadRequestException("A user with this email already exists");
 
-        if (await userManager.FindByEmailAsync(request.Dto.UserName) != null)
+        if (await userManager.FindByNameAsync(request.Dto.UserName) != null)
             throw new BadRequestException("A user with this UserName already exists");
 
         var user = new User
@@ -28,7 +28,7 @@ public class RegisterHandler(
             throw new BadRequestException(
                 string.Join(";", result.Errors.Select(e => e.Description)));
 
-        var response = new IdentityUserResponseDto(
+        var response = new UserResponseDto(
                user.UserName,
                user.Email,
                jwtSecurityService.CreateToken(user));

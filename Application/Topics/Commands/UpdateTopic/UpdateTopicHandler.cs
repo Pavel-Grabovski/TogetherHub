@@ -1,9 +1,9 @@
-﻿
-namespace Application.Topics.Commands.UpdateTopic;
+﻿namespace Application.Topics.Commands.UpdateTopic;
 
 public class UpdateTopicHandler(
     IApplicationDbContext dbContext,
-    IMapper mapper)
+    UserManager<User> userManager,
+    IUserAccessor userAccessor)
     : ICommandHandler<UpdateTopicCommand, UpdateTopicResult>
 {
     public async Task<UpdateTopicResult> Handle(
@@ -11,17 +11,28 @@ public class UpdateTopicHandler(
         CancellationToken cancellationToken)
     {
         TopicId topicId = TopicId.Of(request.Id);
+
         Topic? topicDb = await dbContext.Topics
-           .FindAsync(topicId, cancellationToken);
+           .AsNoTracking()
+           .FirstOrDefaultAsync(t => t.Id == topicId, cancellationToken);
 
         if (topicDb is null || topicDb.IsDelete)
             throw new TopicNotFoundException(request.Id);
+
+        string userId= userAccessor.GetUserId();
+        User? user = await userManager.FindByIdAsync(userId);
+
+        if (user is null) 
+            throw new UserNotFoundException(userId);
+
+        if (topicDb.AuthorId != userId)
+            throw new UserNotOrganizerException(topicId.Value, userId);
 
         topicDb = UpdateTopic(topicDb, request);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new UpdateTopicResult(mapper.Map<TopicResponseDto>(topicDb));
+        return new UpdateTopicResult(topicDb.ToTopicResponseDto());
     }
 
     private static Topic UpdateTopic(Topic topicDb, UpdateTopicCommand request)

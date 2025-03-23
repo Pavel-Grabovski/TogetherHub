@@ -1,8 +1,7 @@
 ﻿namespace Application.Topics.Queries.GetTopics;
 
 public class GetTopicsHandler(
-    IApplicationDbContext dbContext,
-    IMapper mapper)
+    IApplicationDbContext dbContext)
     : IQueryHandler<GetTopicsQuery, GetTopicsResult>
 {
     public async Task<GetTopicsResult> Handle(
@@ -11,11 +10,13 @@ public class GetTopicsHandler(
     {
         List<Topic> topicsDb = await dbContext.Topics
           .AsNoTracking()
+          .Include(t => t.Users)
+          .ThenInclude(r => r.CurrentUser)
           .Where(t => !t.IsDelete)
-          .ToListAsync();
+          .ToListAsync(cancellationToken);
 
         List<TopicResponseDto> topicsResponse =
-            mapper.Map<List<TopicResponseDto>>(topicsDb);
+            topicsDb.ToTopicResponseDtoList();
 
         return new GetTopicsResult(topicsResponse);
     }

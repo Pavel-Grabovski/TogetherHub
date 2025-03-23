@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Extensions.Handlers;
+namespace Api.Middleware;
 
-public class CustomExtensionHandler(
-    ILogger<CustomExtensionHandler> logger)
+public class ExtensionHandler(
+    ILogger<ExtensionHandler> logger)
     : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
@@ -20,7 +20,7 @@ public class CustomExtensionHandler(
             ExceptionBase exceptionBase => (
                 exceptionBase.Message,
                 exceptionBase.GetType().Name,
-                exceptionBase.StatusCode
+                httpContext.Response.StatusCode = exceptionBase.StatusCode
             ),
 
             _ => (

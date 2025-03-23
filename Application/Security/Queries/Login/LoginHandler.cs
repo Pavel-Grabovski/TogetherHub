@@ -12,7 +12,8 @@ public class LoginHandler(
         User? user = await userManager.Users
             .FirstOrDefaultAsync(
               u => request.LoginRequest.Login.ToUpper() == u.NormalizedEmail 
-                || request.LoginRequest.Login.ToUpper() == u.NormalizedUserName);
+                || request.LoginRequest.Login.ToUpper() == u.NormalizedUserName, 
+              cancellationToken);
 
         if (user == null)
             throw new UnauthorizedException();
@@ -23,7 +24,7 @@ public class LoginHandler(
         if (!result)
             throw new UnauthorizedException();
 
-        IdentityUserResponseDto response = new IdentityUserResponseDto(
+        UserResponseDto response = new UserResponseDto(
                 user.UserName,
                 user.Email,
                 jwtSecurityService.CreateToken(user));

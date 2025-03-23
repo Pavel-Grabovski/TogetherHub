@@ -1,11 +1,13 @@
 ﻿using Application.Security.Services;
-using Domain.Security;
 using Infrastructure.Data.DataBaseContext;
+using Infrastructure.Security.Auth;
+using Infrastructure.Security.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
-namespace Api.Security.Extensions;
+namespace Infrastructure.Security.Extensions;
 
 public static class IdentityOptionExtension
 {
@@ -40,6 +42,16 @@ public static class IdentityOptionExtension
                     ClockSkew = TimeSpan.Zero,
                 };
             });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("IsTopicAuthor", policy =>
+            {
+                policy.Requirements.Add(new TopicDeletionRequirement());
+            });
+        });
+
+        services.AddTransient<IAuthorizationHandler, TopicDeletionRequirementHandler>();
 
         services.AddScoped<IJwtSecurityService, JwtSecurityService>();
 
