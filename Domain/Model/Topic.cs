@@ -10,6 +10,7 @@ public class Topic : Entity<TopicId>
     public required string AuthorId { get; set; }
     public bool IsVoided { get; set; }
     public List<Relationship> Users { get; set; } = new ();
+    public List<Comment> Comments { get; set; } = new ();
 
     public static Topic Create(
         TopicId id,

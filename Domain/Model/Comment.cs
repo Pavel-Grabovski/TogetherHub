@@ -3,8 +3,10 @@
 public class Comment : Entity<CommentId>
 {
     public required User Author { get; set; }
+    public required string AuthorId { get; set; }
 
     public required Topic CurrentTopic { get; set; }
+    public required TopicId CurrentTopicId { get; set; }
 
     public required string Text { get; set; }
 
@@ -20,7 +22,9 @@ public class Comment : Entity<CommentId>
         {
             Id = commentId,
             Author = author,
+            AuthorId = author.Id,
             CurrentTopic = topic, 
+            CurrentTopicId = topic.Id,
             Text = text
         };
     }
