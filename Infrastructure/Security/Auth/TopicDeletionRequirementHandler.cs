@@ -29,12 +29,11 @@ public class TopicDeletionRequirementHandler(
 
         TopicId topicId = TopicId.Of(Guid.Parse(value));
 
-        Relationship? relationship = await dbContext.Relationships
+        Topic? topic = await dbContext.Topics
             .AsNoTracking()
-            .FirstOrDefaultAsync(r => r.UserReference == userId.ToString() 
-                && r.TopicReference == topicId);
+            .FirstOrDefaultAsync(t => t.Id == topicId);
 
-        if (relationship?.Role == Domain.Enums.ParticipantRole.Organizer)
+        if (topic is not null && topic.AuthorId == userId)
         {
             context.Succeed(requirement);
         }
