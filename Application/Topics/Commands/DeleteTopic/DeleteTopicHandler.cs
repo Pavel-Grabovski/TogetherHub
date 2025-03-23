@@ -2,7 +2,6 @@
 
 public class DeleteTopicHandler(
     IApplicationDbContext dbContext,
-    UserManager<User> userManager,
     IUserAccessor userAccessor)
     : ICommandHandler<DeleteTopicCommand, DeleteTopicResult>
 {
@@ -18,10 +17,6 @@ public class DeleteTopicHandler(
             throw new TopicNotFoundException(request.Id);
 
         string userId = userAccessor.GetUserId();
-        User? user = await userManager.FindByIdAsync(userId);
-
-        if (user is null)
-            throw new UserNotFoundException(userId);
 
         if (topicDb.AuthorId != userId)
             throw new UserNotOrganizerException(topicId.Value, userId);
