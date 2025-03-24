@@ -14,4 +14,10 @@ public static class CommentExtensions
             CreationTime = comment.CreationTime
         };
     }
+
+    public static List<CommentResponseDto> ToCommentsResponseDto(
+        this IEnumerable<Comment> comments)
+    {
+        return comments.Select(c => c.ToCommentResponseDto()).ToList();
+    }
 }
